@@ -27,7 +27,6 @@ public class SCOSEntry extends AppCompatActivity {
         detector=new GestureDetector(this,new MyGestureListener(new MyRightLeftListener() {
             @Override
             public void onLeft() {
-
                     callMainScreen();
             }
         }));

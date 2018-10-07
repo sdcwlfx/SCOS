@@ -6,7 +6,8 @@
     <string name="main_screen_sys_help">系统帮助</string>
 
     <string name="user_name_text">登录名：</string>
-    <string name="user_name_tips">请输入登录名</string>
+    <string name="user_name_tips">请输入英文字母或数字</string>
+    <string name="user_password_tips">请输入英文字母或数字</string>
     <string name="user_password_text">登录密码：</string>
     <string name="login_button">登录</string>
     <string name="login_return">返回</string>

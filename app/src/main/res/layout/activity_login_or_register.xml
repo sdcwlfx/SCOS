@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <RelativeLayout
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
@@ -30,7 +30,7 @@
                     android:text="@string/user_name_text"/>
             </RelativeLayout>
             <RelativeLayout
-                android:layout_weight="3"
+                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <RelativeLayout
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
@@ -57,14 +57,15 @@
                     android:text="@string/user_password_text"/>
             </RelativeLayout>
             <RelativeLayout
-                android:layout_weight="3"
+                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/user_password_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword"/>
+                    android:inputType="textPassword"
+                    android:hint="@string/user_password_tips"/>
             </RelativeLayout>
         </LinearLayout>
 
@@ -92,18 +93,20 @@
                     android:id="@+id/return_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/login_return"/>
+                    android:text="@string/login_return"
+                    android:background="@color/colorAccent"/>
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
     <ProgressBar
         android:id="@+id/login_progress_bar"
-        android:layout_centerInParent="true"
-        style="@style/myProgressBarLoginStyle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:indeterminate="true"
-        android:indeterminateDuration="2000"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        style="@style/Widget.AppCompat.ProgressBar"
+        />
+    <!--style="@style/myProgressBarLoginStyle"-->
 
 </RelativeLayout>

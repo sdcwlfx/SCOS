@@ -10,6 +10,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="es.source.code.activity.MainScreen">
 
+    <GridView
+        android:id="@+id/guide_grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnWidth="80dp"
+        android:stretchMode="spacingWidthUniform"
+        android:numColumns="3">
+
+    </GridView>
+
+    <!--
     <Button
         android:id="@+id/main_screen_order_dish"
         android:layout_width="wrap_content"
@@ -33,6 +44,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/main_screen_login_register"
         android:text="@string/main_screen_sys_help"/>
-
+-->
 
 </RelativeLayout>
