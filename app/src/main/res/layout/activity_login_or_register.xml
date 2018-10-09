@@ -93,10 +93,14 @@
                     android:id="@+id/return_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/login_return"
-                    android:background="@color/colorAccent"/>
+                    android:text="@string/login_return" />
             </RelativeLayout>
         </LinearLayout>
+        <Button
+            android:id="@+id/register_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/register_button" />
     </LinearLayout>
     <ProgressBar
         android:id="@+id/login_progress_bar"

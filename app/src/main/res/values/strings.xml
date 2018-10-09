@@ -11,4 +11,14 @@
     <string name="user_password_text">登录密码：</string>
     <string name="login_button">登录</string>
     <string name="login_return">返回</string>
+    <string name="register_button">注册</string>
+    <string name="food_order">点菜</string>
+    <string name="food_no_order">退点</string>
+
+    <string name="food_ordered">已点菜品</string>
+    <string name="order_watch">查看订单</string>
+    <string name="call_service">呼叫服务</string>
+
+    <string name="commit_acount">提交订单</string>
+    <string name="check_out_acount">结账</string>
 </resources>

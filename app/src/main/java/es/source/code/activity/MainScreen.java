@@ -19,12 +19,11 @@ import java.util.Map;
 import java.util.Objects;
 
 import es.source.code.R;
+import es.source.code.model.User;
 
 public class MainScreen extends AppCompatActivity {
 
     private Bundle bundle;//传值
-    private Button orderDishButton;//点菜
-    private Button orderViewButton;//订单
     private GridView gridView;
     private SimpleAdapter simpleAdapter;
     private ArrayList<Map<String,Object>> dataList;
@@ -32,7 +31,8 @@ public class MainScreen extends AppCompatActivity {
     private String orderView="查看订单";
     private String loginOrRegister="登录/注册";
     private String systemHelp="系统帮助";
-    private String string;
+    private User currentUser;//登录用户
+    private Boolean firstLogin=false;//第一次登录
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +56,25 @@ public class MainScreen extends AppCompatActivity {
                 Map<String,Object> selectedGuide=dataList.get(position);
                 String selectedName=selectedGuide.get("name").toString();//获得选中的功能名
                 if(selectedName.equals(orderDish)){//点菜
+                    Bundle bundle=new Bundle();
+                    bundle.putSerializable("currentUser",currentUser);
+                    Intent intent=new Intent(MainScreen.this,FoodView.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
 
                 }else if(selectedName.equals(orderView)){//查看订单
+                    Bundle bundle=new Bundle();
+                    bundle.putSerializable("currentUser",currentUser);
+                    Intent intent=new Intent(MainScreen.this,FoodOrderView.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
 
                 }else if(selectedName.equals(loginOrRegister)){//登录/注册
                     Intent intent=new Intent(MainScreen.this,LoginOrRegister.class);
                     startActivity(intent);
-                }else {//系统帮助
+                }else if (selectedName.equals(systemHelp)){//系统帮助
+
+                }else{
 
                 }
             }
@@ -124,6 +136,7 @@ public class MainScreen extends AppCompatActivity {
             }
 
             if(bundle.getString("String","").equals("LoginSuccess")){
+                currentUser=(User)bundle.getSerializable("loginUser");
                 dataList.clear();//清空
                 for (int i=0;i<icon.length;i++){
                     Map<String,Object> map=new HashMap<String, Object>();
@@ -131,9 +144,22 @@ public class MainScreen extends AppCompatActivity {
                     map.put("name",name[i]);
                     dataList.add(map);
                 }
+            }else if(bundle.getString("String","").equals("RegisterSuccess")){
+                firstLogin=true;//首次登录
+                currentUser=(User)bundle.getSerializable("loginUser");
+                dataList.clear();//清空
+                for (int i=0;i<icon.length;i++){
+                    Map<String,Object> map=new HashMap<String, Object>();
+                    map.put("icon",icon[i]);
+                    map.put("name",name[i]);
+                    dataList.add(map);
+                }
+            }else{
+                currentUser=null;
             }
 
         }else {
+            currentUser=null;
             for (int i=0;i<icon.length;i++){
                 Map<String,Object> map=new HashMap<String, Object>();
                 map.put("icon",icon[i]);
@@ -154,6 +180,9 @@ public class MainScreen extends AppCompatActivity {
 
     private Handler myHandler=new Handler() {
         public void handleMessage(Message msg){
+            if(firstLogin){//首次登录
+                Toast.makeText(MainScreen.this,"欢迎您成为SCOS新用户",Toast.LENGTH_SHORT).show();
+            }
             String[] from={"icon","name"};
             int[] to={R.id.guide_Image_view,R.id.guide_text_view};
             simpleAdapter=new SimpleAdapter(MainScreen.this,dataList,R.layout.main_screen_item,from,to);

@@ -22,17 +22,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".activity.MainScreen"
+        <activity
+            android:name=".activity.MainScreen"
             android:exported="true"
             android:permission="scos.permission.ACCESSSCOS">
             <intent-filter>
                 <action android:name="scos.intent.action.SCOSMAIN" />
+
                 <category android:name="scos.intent.category.SCOSLAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".activity.LoginOrRegister"></activity>
+        <activity android:name=".activity.LoginOrRegister" />
+        <activity android:name=".activity.FoodView" />
+        <activity android:name=".activity.FoodOrderView" />
+        <activity android:name=".activity.FoodDetailed"></activity>
     </application>
 
 </manifest>
