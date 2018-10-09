@@ -133,12 +133,12 @@ public class LoginOrRegister extends AppCompatActivity {
                 loginBundle=new Bundle();
                 loginUser.setUserName(userNameEdit.getText().toString());
                 loginUser.setPassword(passwordEdit.getText().toString());
-                if(loginButtonSelected){//登录操作
+                if(loginButtonSelected!=null&&loginButtonSelected==true){//登录操作
                     loginUser.setOldUser(true);
                     loginBundle.putString("String","LoginSuccess");
                 }else{//注册操作
                     loginUser.setOldUser(false);
-                    loginBundle.putString("String","ResgisterSuccess");
+                    loginBundle.putString("String","RegisterSuccess");
                 }
                 loginBundle.putSerializable("loginUser",loginUser);//传递用户对象（序列化）
                 Intent mainScreenIntent=new Intent(LoginOrRegister.this,MainScreen.class);

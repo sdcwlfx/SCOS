@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -32,7 +33,7 @@ public class MainScreen extends AppCompatActivity {
     private String loginOrRegister="登录/注册";
     private String systemHelp="系统帮助";
     private User currentUser;//登录用户
-    private Boolean firstLogin=false;//第一次登录
+    private Boolean firstLogin;//第一次登录
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,13 +114,21 @@ public class MainScreen extends AppCompatActivity {
         String nameHind[]={"登录/注册","系统帮助"};
         String name[]={"点菜","查看订单","登录/注册","系统帮助"};
         dataList=new ArrayList<Map<String,Object>>();
-
+        firstLogin=false;
         //判断是否隐藏点菜、订单项
         if(getIntent()!=null&&getIntent().getExtras()!=null) {
             Intent enrtyIntent = getIntent();
             bundle = enrtyIntent.getExtras();
+
+            Log.i("不为空","initViews");
+            String str=bundle.getString("String","");
+            Log.i(str,"String");
+
             //隐藏点菜、订单项
-            if(!bundle.getString("String","").equals("FromEntry")){
+            //if(!bundle.getString("String","").equals("FromEntry")){//////////////////////////////
+            if(!str.equals("FromEntry")){
+                Log.i("不为FromEntry","initViews");
+            //if(bundle.getString("String","").equals("FromEntry")){
                 for (int i=0;i<iconHind.length;i++){
                     Map<String,Object> map=new HashMap<String, Object>();
                     map.put("icon",iconHind[i]);
@@ -127,6 +136,7 @@ public class MainScreen extends AppCompatActivity {
                     dataList.add(map);
                 }
             }else {
+                Log.i("为FromEntry","initViews");
                 for (int i=0;i<icon.length;i++){
                     Map<String,Object> map=new HashMap<String, Object>();
                     map.put("icon",icon[i]);
@@ -135,8 +145,10 @@ public class MainScreen extends AppCompatActivity {
                 }
             }
 
-            if(bundle.getString("String","").equals("LoginSuccess")){
+            if(str.equals("LoginSuccess")){
+                Log.i("登陆成功","initViews");
                 currentUser=(User)bundle.getSerializable("loginUser");
+                Log.i("用户为"+currentUser.getUserName(),"initViews");
                 dataList.clear();//清空
                 for (int i=0;i<icon.length;i++){
                     Map<String,Object> map=new HashMap<String, Object>();
@@ -144,9 +156,11 @@ public class MainScreen extends AppCompatActivity {
                     map.put("name",name[i]);
                     dataList.add(map);
                 }
-            }else if(bundle.getString("String","").equals("RegisterSuccess")){
-                firstLogin=true;//首次登录
+            }else if(str.equals("RegisterSuccess")){
+                Log.i("注册成功","initViews");
                 currentUser=(User)bundle.getSerializable("loginUser");
+                Log.i("用户为"+currentUser.getUserName(),"initViews");
+                firstLogin=true;//首次登录
                 dataList.clear();//清空
                 for (int i=0;i<icon.length;i++){
                     Map<String,Object> map=new HashMap<String, Object>();
@@ -159,6 +173,7 @@ public class MainScreen extends AppCompatActivity {
             }
 
         }else {
+            Log.i("没进去","initViews");
             currentUser=null;
             for (int i=0;i<icon.length;i++){
                 Map<String,Object> map=new HashMap<String, Object>();
@@ -180,7 +195,8 @@ public class MainScreen extends AppCompatActivity {
 
     private Handler myHandler=new Handler() {
         public void handleMessage(Message msg){
-            if(firstLogin){//首次登录
+
+            if(firstLogin==true){//首次登录
                 Toast.makeText(MainScreen.this,"欢迎您成为SCOS新用户",Toast.LENGTH_SHORT).show();
             }
             String[] from={"icon","name"};
