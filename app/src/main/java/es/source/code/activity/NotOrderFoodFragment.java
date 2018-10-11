@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +50,8 @@ public class NotOrderFoodFragment extends Fragment {
         context=getActivity();
 
         // TODO: 2018-10-09  开辟子线程加载信息,添加ProgressBar显示加载中
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
+        notOrderFoodRecycleView.setLayoutManager(linearLayoutManager);
         foodNotOrdeAdapter=new FoodNotOrderAdapter(currentUserFoodArrayList,context);
         notOrderFoodRecycleView.setAdapter(foodNotOrdeAdapter);
         foodNumber.setText("菜品总数");

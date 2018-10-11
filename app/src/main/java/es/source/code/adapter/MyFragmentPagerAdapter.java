@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -31,11 +32,12 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
     }
     @Override
     public Fragment getItem(int position){
-        if (position==1){
+        if (position==0){
+            Log.i("新建了凉菜页面","ColdFoodFragment");
             return new ColdFoodFragment();
-        }else if(position==2){
+        }else if(position==1){
             return new HotFoodFragment();
-        }else if(position==3){
+        }else if(position==2){
             return new SeaFoodFragment();
         }else{
             return new WineFragment();

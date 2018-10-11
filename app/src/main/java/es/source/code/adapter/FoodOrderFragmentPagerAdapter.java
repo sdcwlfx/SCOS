@@ -31,7 +31,7 @@ public class FoodOrderFragmentPagerAdapter extends FragmentPagerAdapter {
     }
     @Override
     public Fragment getItem(int position){
-        if(position==1){//未下单
+        if(position==0){//未下单
             return new NotOrderFoodFragment();////////////////////////
         }else{//下单未结账
             // TODO: 2018-10-09 未清楚是否传参成功currentUser

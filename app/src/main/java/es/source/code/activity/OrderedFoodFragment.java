@@ -4,6 +4,7 @@ package es.source.code.activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,7 @@ import es.source.code.model.CurrentUserFood;
 import es.source.code.model.User;
 
 /**
- * 已下单未结账Fragment(相当于activity中的子视图)
+ * 已下单未结账Fragment(相当于ViewPager中的子视图)
  * A simple {@link Fragment} subclass.
  */
 public class OrderedFoodFragment extends Fragment {
@@ -52,6 +53,8 @@ public class OrderedFoodFragment extends Fragment {
         context=getActivity();
 
         // TODO: 2018-10-09  开辟子线程加载信息，添加ProgressBar显示加载中
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
+        orderedFoodRecycleView.setLayoutManager(linearLayoutManager);
         foodOrderedAdapter=new FoodOrderedAdapter(currentUserFoodArrayList,context);
         orderedFoodRecycleView.setAdapter(foodOrderedAdapter);
         foodNumber.setText("菜品总数");

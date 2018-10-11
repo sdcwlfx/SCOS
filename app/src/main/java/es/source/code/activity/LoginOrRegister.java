@@ -55,10 +55,13 @@ public class LoginOrRegister extends AppCompatActivity {
             public void onClick(View view){
                 userNameMatch=pattern.matcher(userNameEdit.getText()).matches();
                 passwordMatch=pattern.matcher(passwordEdit.getText()).matches();
-                if(!userNameMatch||!passwordMatch) {
-                    userNameEdit.setText(errorWarning);
+                if(!userNameMatch) {
+                    //userNameEdit.setText(errorWarning);
+                    userNameEdit.setError(errorWarning);
                     loginButtonSelected=false;//
 
+                }else if(!passwordMatch){
+                    passwordEdit.setError(errorWarning);
                 }else{
                     loginButtonSelected=true;//点了登录按钮
                     //显示进度条

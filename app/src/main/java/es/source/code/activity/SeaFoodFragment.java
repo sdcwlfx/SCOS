@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,8 @@ public class SeaFoodFragment extends Fragment {
         View view=inflater.inflate(R.layout.fragment_sea_food,container,false);
         seaFoodRecycleView=(RecyclerView)view.findViewById(R.id.sea_food_recycle_view);
         context=getActivity();//获取依附的上下文（Activity）
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
+        seaFoodRecycleView.setLayoutManager(linearLayoutManager);
         foodAdapter=new FoodAdapter(seaFoodList,currentUserFoodList,context);
         seaFoodRecycleView.setAdapter(foodAdapter);
         return view;

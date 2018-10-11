@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,6 +76,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHodler> {
                 bundle.putSerializable("foodList",foodList);
                 bundle.putInt("position",position);
                 intent.putExtras(bundle);
+                Log.i("进入详情页面","子项最外层点击事件");
                 context.startActivity(intent);
 
             }
@@ -86,10 +88,15 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHodler> {
             @Override
             public void onClick(View v) {
                 // TODO: 2018-10-08 维护一个全局对象 ？currentUserFoodList
-                if(hodler.foodOrderButton.getText().equals(R.string.food_order)){
+                Log.i("点菜",hodler.foodOrderButton.getText().toString());
+                String buttonText=hodler.foodOrderButton.getText().toString();
+                if(buttonText.equals("点菜")){
                     // TODO: 2018-10-08 将菜品加入全局对象 currentUserFoodList
-                    notifyDataSetChanged();//刷新适配器 目的将按钮改为“退点”
+                    Log.i("点菜成功","点菜按钮");
                     Toast.makeText(context,"点菜成功",Toast.LENGTH_SHORT).show();
+                   // notifyDataSetChanged();//刷新适配器 目的将按钮改为“退点”
+                    notifyItemChanged(hodler.getAdapterPosition());
+
                 }
             }
         });
@@ -101,9 +108,10 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHodler> {
         hodler.foodImageView.setImageResource(food.getFoodImgId());
         hodler.foodNameText.setText(food.getFoodName());
         hodler.foodPriceText.setText(food.getFoodPrice());
+        hodler.foodOrderButton.setText("点菜");
         for(int i=0;i<currentUserFoodList.size();i++){
             if(currentUserFoodList.get(i).getFood().getFoodName().equals(food.getFoodName())){
-                hodler.foodOrderButton.setText(R.string.food_no_order);//按钮显示退订
+                hodler.foodOrderButton.setText("退订");//按钮显示退订
             }
         }
 

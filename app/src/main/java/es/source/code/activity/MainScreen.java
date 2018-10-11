@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class MainScreen extends AppCompatActivity {
     private String orderView="查看订单";
     private String loginOrRegister="登录/注册";
     private String systemHelp="系统帮助";
+    private String logined="已登录";
     private User currentUser;//登录用户
     private Boolean firstLogin;//第一次登录
 
@@ -75,7 +77,7 @@ public class MainScreen extends AppCompatActivity {
                     startActivity(intent);
                 }else if (selectedName.equals(systemHelp)){//系统帮助
 
-                }else{
+                }else if(selectedName.equals(logined)){//已登录按钮
 
                 }
             }
@@ -109,8 +111,8 @@ public class MainScreen extends AppCompatActivity {
 
 
     private void initeDataList(){
-        int iconHind[]={R.drawable.ic_logo,R.drawable.ic_logo};
-        int icon[]={R.drawable.ic_logo,R.drawable.ic_logo,R.drawable.ic_logo,R.drawable.ic_logo};
+        int iconHind[]={R.drawable.order_food,R.drawable.order_watch};
+        int icon[]={R.drawable.order_food,R.drawable.order_watch,R.drawable.login_register,R.drawable.system_help};
         String nameHind[]={"登录/注册","系统帮助"};
         String name[]={"点菜","查看订单","登录/注册","系统帮助"};
         dataList=new ArrayList<Map<String,Object>>();
@@ -137,6 +139,7 @@ public class MainScreen extends AppCompatActivity {
                 }
             }else {
                 Log.i("为FromEntry","initViews");
+
                 for (int i=0;i<icon.length;i++){
                     Map<String,Object> map=new HashMap<String, Object>();
                     map.put("icon",icon[i]);
@@ -150,6 +153,11 @@ public class MainScreen extends AppCompatActivity {
                 currentUser=(User)bundle.getSerializable("loginUser");
                 Log.i("用户为"+currentUser.getUserName(),"initViews");
                 dataList.clear();//清空
+
+                if(currentUser!=null){//显示已登录状态
+                    name[2]="已登录";
+                }
+
                 for (int i=0;i<icon.length;i++){
                     Map<String,Object> map=new HashMap<String, Object>();
                     map.put("icon",icon[i]);
@@ -162,6 +170,11 @@ public class MainScreen extends AppCompatActivity {
                 Log.i("用户为"+currentUser.getUserName(),"initViews");
                 firstLogin=true;//首次登录
                 dataList.clear();//清空
+
+                if(currentUser!=null){//显示已登录状态
+                    name[2]="已登录";
+                }
+
                 for (int i=0;i<icon.length;i++){
                     Map<String,Object> map=new HashMap<String, Object>();
                     map.put("icon",icon[i]);
@@ -175,6 +188,11 @@ public class MainScreen extends AppCompatActivity {
         }else {
             Log.i("没进去","initViews");
             currentUser=null;
+
+            if(currentUser!=null){//显示已登录状态
+                name[2]="已登录";
+            }
+
             for (int i=0;i<icon.length;i++){
                 Map<String,Object> map=new HashMap<String, Object>();
                 map.put("icon",icon[i]);
@@ -187,7 +205,7 @@ public class MainScreen extends AppCompatActivity {
     final Runnable runable=new Runnable() {
         @Override
         public void run() {
-
+            //初始化dataLsit
             initeDataList();
             myHandler.obtainMessage().sendToTarget();
         }

@@ -24,6 +24,7 @@ public class FoodDetailed extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_detailed);
+
         foodDetailedRecyleView=(RecyclerView)findViewById(R.id.food_detailed_recycle_view);
         LinearLayoutManager layoutManager=new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);//水平方向
@@ -34,8 +35,10 @@ public class FoodDetailed extends AppCompatActivity {
         // TODO: 2018-10-09 实际用全局变量 currentUserFoodArrayList 接受传来的ArrayList<Food>对象及位置position,先适配再转到该位置菜品页即可查看指定菜品详情
 
         // TODO: 2018-10-09 子线程中加载
+        Bundle bundle=getIntent().getExtras();
+        foodArrayList=(ArrayList<Food>)bundle.getSerializable("foodList");
         currentUserFoodArrayList=new ArrayList<CurrentUserFood>();
-        foodArrayList=new ArrayList<Food>();
+        //foodArrayList=new ArrayList<Food>();
 
         foodDetailedAdapter=new FoodDetailedAdapter(foodArrayList,currentUserFoodArrayList,FoodDetailed.this);
         foodDetailedRecyleView.setAdapter(foodDetailedAdapter);
