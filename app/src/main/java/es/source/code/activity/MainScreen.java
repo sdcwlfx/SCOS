@@ -1,6 +1,7 @@
 package es.source.code.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +37,8 @@ public class MainScreen extends AppCompatActivity {
     private String logined="已登录";
     private User currentUser;//登录用户
     private Boolean firstLogin;//第一次登录
+    private SharedPreferences sharedPreferences;
+    private String loginState;//登录状态
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,8 @@ public class MainScreen extends AppCompatActivity {
                     Intent intent=new Intent(MainScreen.this,LoginOrRegister.class);
                     startActivity(intent);
                 }else if (selectedName.equals(systemHelp)){//系统帮助
+                    Intent intent=new Intent(MainScreen.this,SCOSHelper.class);
+                    startActivity(intent);
 
                 }else if(selectedName.equals(logined)){//已登录按钮
 
@@ -111,13 +116,17 @@ public class MainScreen extends AppCompatActivity {
 
 
     private void initeDataList(){
-        int iconHind[]={R.drawable.order_food,R.drawable.order_watch};
+        int iconHind[]={R.drawable.login_register,R.drawable.system_help};
         int icon[]={R.drawable.order_food,R.drawable.order_watch,R.drawable.login_register,R.drawable.system_help};
         String nameHind[]={"登录/注册","系统帮助"};
         String name[]={"点菜","查看订单","登录/注册","系统帮助"};
         dataList=new ArrayList<Map<String,Object>>();
         firstLogin=false;
-        //判断是否隐藏点菜、订单项
+
+        sharedPreferences=getSharedPreferences("SCOS",MODE_PRIVATE);
+        loginState=sharedPreferences.getString("loginState","");
+
+        //使用loginState判断用户是否登录，确定点菜、订单项是否隐藏
         if(getIntent()!=null&&getIntent().getExtras()!=null) {
             Intent enrtyIntent = getIntent();
             bundle = enrtyIntent.getExtras();
@@ -128,9 +137,8 @@ public class MainScreen extends AppCompatActivity {
 
             //隐藏点菜、订单项
             //if(!bundle.getString("String","").equals("FromEntry")){//////////////////////////////
-            if(!str.equals("FromEntry")){
-                Log.i("不为FromEntry","initViews");
-            //if(bundle.getString("String","").equals("FromEntry")){
+            if(loginState.equals("")||loginState.equals("0")){
+                //if(bundle.getString("String","").equals("FromEntry")){
                 for (int i=0;i<iconHind.length;i++){
                     Map<String,Object> map=new HashMap<String, Object>();
                     map.put("icon",iconHind[i]);
@@ -189,17 +197,104 @@ public class MainScreen extends AppCompatActivity {
             Log.i("没进去","initViews");
             currentUser=null;
 
-            if(currentUser!=null){//显示已登录状态
-                name[2]="已登录";
-            }
-
-            for (int i=0;i<icon.length;i++){
+            for (int i=0;i<iconHind.length;i++){
                 Map<String,Object> map=new HashMap<String, Object>();
-                map.put("icon",icon[i]);
-                map.put("name",name[i]);
+                map.put("icon",iconHind[i]);
+                map.put("name",nameHind[i]);
                 dataList.add(map);
             }
         }
+
+
+
+//        //判断是否隐藏点菜、订单项
+//        if(getIntent()!=null&&getIntent().getExtras()!=null) {
+//            Intent enrtyIntent = getIntent();
+//            bundle = enrtyIntent.getExtras();
+//
+//            Log.i("不为空","initViews");
+//            String str=bundle.getString("String","");
+//            Log.i(str,"String");
+//
+//            //隐藏点菜、订单项
+//            //if(!bundle.getString("String","").equals("FromEntry")){//////////////////////////////
+//            if(!str.equals("FromEntry")){
+//                Log.i("不为FromEntry","initViews");
+//            //if(bundle.getString("String","").equals("FromEntry")){
+//                for (int i=0;i<iconHind.length;i++){
+//                    Map<String,Object> map=new HashMap<String, Object>();
+//                    map.put("icon",iconHind[i]);
+//                    map.put("name",nameHind[i]);
+//                    dataList.add(map);
+//                }
+//            }else {
+//                Log.i("为FromEntry","initViews");
+//
+//                for (int i=0;i<icon.length;i++){
+//                    Map<String,Object> map=new HashMap<String, Object>();
+//                    map.put("icon",icon[i]);
+//                    map.put("name",name[i]);
+//                    dataList.add(map);
+//                }
+//            }
+//
+//            if(str.equals("LoginSuccess")){
+//                Log.i("登陆成功","initViews");
+//                currentUser=(User)bundle.getSerializable("loginUser");
+//                Log.i("用户为"+currentUser.getUserName(),"initViews");
+//                dataList.clear();//清空
+//
+//                if(currentUser!=null){//显示已登录状态
+//                    name[2]="已登录";
+//                }
+//
+//                for (int i=0;i<icon.length;i++){
+//                    Map<String,Object> map=new HashMap<String, Object>();
+//                    map.put("icon",icon[i]);
+//                    map.put("name",name[i]);
+//                    dataList.add(map);
+//                }
+//            }else if(str.equals("RegisterSuccess")){
+//                Log.i("注册成功","initViews");
+//                currentUser=(User)bundle.getSerializable("loginUser");
+//                Log.i("用户为"+currentUser.getUserName(),"initViews");
+//                firstLogin=true;//首次登录
+//                dataList.clear();//清空
+//
+//                if(currentUser!=null){//显示已登录状态
+//                    name[2]="已登录";
+//                }
+//
+//                for (int i=0;i<icon.length;i++){
+//                    Map<String,Object> map=new HashMap<String, Object>();
+//                    map.put("icon",icon[i]);
+//                    map.put("name",name[i]);
+//                    dataList.add(map);
+//                }
+//            }else{
+//                currentUser=null;
+//            }
+//
+//        }else {
+//            Log.i("没进去","initViews");
+//            currentUser=null;
+//
+//            if(currentUser!=null){//显示已登录状态
+//                name[2]="已登录";
+//            }
+//
+//            for (int i=0;i<icon.length;i++){
+//                Map<String,Object> map=new HashMap<String, Object>();
+//                map.put("icon",icon[i]);
+//                map.put("name",name[i]);
+//                dataList.add(map);
+//            }
+//        }
+
+
+
+
+
     }
 
     final Runnable runable=new Runnable() {

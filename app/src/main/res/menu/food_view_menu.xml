@@ -12,6 +12,9 @@
         android:id="@+id/call_service"
         android:title="@string/call_service">
     </item>
+    <item
+        android:id="@+id/start_real_time_update"
+        android:title="@string/start_real_time_update"/>
 
 
 

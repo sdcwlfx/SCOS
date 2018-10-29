@@ -40,11 +40,13 @@ public class ColdFoodFragment extends Fragment {
         food.setFoodImgId(R.mipmap.ic_logo);
         food.setFoodName("白菜");
         food.setFoodPrice("10");
+        food.setFoodStackNum(100);
         coldFoodList.add(food);
         Food food1=new Food();
         food1.setFoodImgId(R.mipmap.ic_logo);
         food1.setFoodName("黄瓜");
         food1.setFoodPrice("15");
+        food1.setFoodStackNum(101);
         coldFoodList.add(food1);
 
         currentUserFoodList=new ArrayList<CurrentUserFood>();

@@ -32,5 +32,14 @@
         android:layout_height="wrap_content"
         android:text="@string/check_out_acount"/>
     </LinearLayout>
+    <ProgressBar
+        android:id="@+id/check_out_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:progress="0"
+        android:max="100"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_gravity="center"/>
 
 </FrameLayout>

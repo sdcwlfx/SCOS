@@ -35,7 +35,7 @@ public class FoodDetailedAdapter extends RecyclerView.Adapter<FoodDetailedAdapte
         ImageView foodDetailedImageView;
         TextView foodDetailedNameText;
         TextView foodDetailedPriceText;
-        EditText remarksEdit;
+        TextView remarksEdit;
         Button foodDetailedButton;
 
         public ViewHodler(View view){
@@ -44,7 +44,7 @@ public class FoodDetailedAdapter extends RecyclerView.Adapter<FoodDetailedAdapte
             foodDetailedImageView=(ImageView)view.findViewById(R.id.food_detailed_image);
             foodDetailedNameText=(TextView)view.findViewById(R.id.food_detailed_name);
             foodDetailedPriceText=(TextView)view.findViewById(R.id.food_detailed_price);
-            remarksEdit=(EditText)view.findViewById(R.id.remarks_edit);
+            remarksEdit=(TextView)view.findViewById(R.id.remarks_edit);
             foodDetailedButton=(Button)view.findViewById(R.id.food_detailed_button);
 
         }

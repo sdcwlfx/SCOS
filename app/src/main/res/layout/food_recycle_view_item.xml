@@ -19,6 +19,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"/>
+    <TextView
+        android:id="@+id/food_stock_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"/>
     <Button
         android:id="@+id/food_order_button"
         android:layout_width="wrap_content"

@@ -36,12 +36,14 @@ public class FoodDetailed extends AppCompatActivity {
 
         // TODO: 2018-10-09 子线程中加载
         Bundle bundle=getIntent().getExtras();
+        int position=bundle.getInt("position",0);
         foodArrayList=(ArrayList<Food>)bundle.getSerializable("foodList");
         currentUserFoodArrayList=new ArrayList<CurrentUserFood>();
         //foodArrayList=new ArrayList<Food>();
 
         foodDetailedAdapter=new FoodDetailedAdapter(foodArrayList,currentUserFoodArrayList,FoodDetailed.this);
         foodDetailedRecyleView.setAdapter(foodDetailedAdapter);
+        foodDetailedRecyleView.smoothScrollToPosition(position);//跳转到指定位置
 
 
 

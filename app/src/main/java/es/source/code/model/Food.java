@@ -3,7 +3,7 @@ package es.source.code.model;
 import java.io.Serializable;
 
 /**
- * 菜类：图片、菜名、价格
+ * 菜类：图片、菜名、价格、库存量
  * Created by asus on 2018-10-08.
  */
 
@@ -12,6 +12,7 @@ public class Food implements Serializable{
     private int foodImgId;//菜图片
     private String foodName;//菜名
     private String foodPrice;//菜价格
+    private int foodStackNum;//库存量
 
 
     public int getFoodImgId() {
@@ -36,5 +37,13 @@ public class Food implements Serializable{
 
     public void setFoodPrice(String foodPrice) {
         this.foodPrice = foodPrice;
+    }
+
+    public int getFoodStackNum() {
+        return foodStackNum;
+    }
+
+    public void setFoodStackNum(int foodStackNum) {
+        this.foodStackNum = foodStackNum;
     }
 }

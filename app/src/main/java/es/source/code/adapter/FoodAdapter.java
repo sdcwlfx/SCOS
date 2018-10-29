@@ -40,6 +40,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHodler> {
         ImageView foodImageView;
         TextView foodNameText;
         TextView foodPriceText;
+        TextView foodStackNumText;
         Button foodOrderButton;
 
         public ViewHodler(View view){
@@ -48,6 +49,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHodler> {
             foodImageView=(ImageView)view.findViewById(R.id.food_image);
             foodNameText=(TextView)view.findViewById(R.id.food_name);
             foodPriceText=(TextView)view.findViewById(R.id.food_price);
+            foodStackNumText=(TextView)view.findViewById(R.id.food_stock_number);
             foodOrderButton=(Button)view.findViewById(R.id.food_order_button);
 
         }
@@ -108,6 +110,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHodler> {
         hodler.foodImageView.setImageResource(food.getFoodImgId());
         hodler.foodNameText.setText(food.getFoodName());
         hodler.foodPriceText.setText(food.getFoodPrice());
+        hodler.foodStackNumText.setText(food.getFoodStackNum());
         hodler.foodOrderButton.setText("点菜");
         for(int i=0;i<currentUserFoodList.size();i++){
             if(currentUserFoodList.get(i).getFood().getFoodName().equals(food.getFoodName())){

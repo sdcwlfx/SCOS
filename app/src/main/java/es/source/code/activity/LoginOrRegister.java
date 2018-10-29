@@ -1,6 +1,7 @@
 package es.source.code.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,7 @@ public class LoginOrRegister extends AppCompatActivity {
     private User loginUser;//登录用户
     private Boolean registerButtonSelected;
     private Boolean loginButtonSelected;
+    private SharedPreferences sharedPreferences;//键值对存储
 
 
 
@@ -48,6 +50,7 @@ public class LoginOrRegister extends AppCompatActivity {
         userNameEdit=(EditText)findViewById(R.id.user_name_edit);
         passwordEdit=(EditText)findViewById(R.id.user_password_edit);
 
+        initView();//初始化登陆按钮和注册按钮的显示与否
 
         pattern=Pattern.compile("[A-Za-z0-9]+");//不为空，数字和英文字符
         //登录按钮点击事件
@@ -101,6 +104,14 @@ public class LoginOrRegister extends AppCompatActivity {
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //曾经登陆注册过的，设置登录状态loginState为0
+                if(sharedPreferences.getString("userName",null)!=null){
+                    SharedPreferences.Editor editor=sharedPreferences.edit();
+                    editor.putString("loginState","0");
+                    editor.apply();
+                }
+
+
                 loginBundle=new Bundle();
                 loginBundle.putString("String","Return");
                 Intent mainScreenIntent=new Intent(LoginOrRegister.this,MainScreen.class);
@@ -130,8 +141,15 @@ public class LoginOrRegister extends AppCompatActivity {
             if(progressBar.getVisibility()==View.VISIBLE){
                 progressBar.setVisibility(View.GONE);
             }
+
             //符合规则，创建用户跳转MainScreen
             if(userNameMatch&&passwordMatch){
+                //保存登录名userName及登录状态loginState
+                SharedPreferences.Editor editor=sharedPreferences.edit();
+                editor.putString("userName",userNameEdit.getText().toString());
+                editor.putString("loginState","1");
+                editor.apply();
+
                 loginUser=new User();
                 loginBundle=new Bundle();
                 loginUser.setUserName(userNameEdit.getText().toString());
@@ -152,5 +170,18 @@ public class LoginOrRegister extends AppCompatActivity {
         }
 
     };
+
+
+    //判断是否注册或登陆过SCOS，若没有，则隐藏登录按钮，若有，隐藏注册按钮，设置默认登陆名
+    private void initView(){
+        sharedPreferences=getSharedPreferences("SCOS",MODE_PRIVATE);//获取SCOS，没有就建立SCOS数据库
+        if(sharedPreferences.getString("userName",null)==null){//找到userName,没有返回null
+            loginButton.setVisibility(View.GONE);//登录按钮隐藏
+        }else{//隐藏注册按钮，设置默认登录名
+            registerButton.setVisibility(View.GONE);
+            String userName=sharedPreferences.getString("userName",null);
+            loginButton.setText(userName);
+        }
+    }
 
 }

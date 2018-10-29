@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="es.source.code">
 
+    <uses-permission android:name="android.permission.CALL_PHONE" /> <!-- 电话权限 -->
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+
     <!-- 自定义权限 -->
     <permission
         android:name="scos.permission.ACCESSSCOS"
@@ -29,13 +34,21 @@
             <intent-filter>
                 <action android:name="scos.intent.action.SCOSMAIN" />
 
+                <category android:name="android.intent.category.DEFAULT" /> <!-- 必须有默认的category -->
                 <category android:name="scos.intent.category.SCOSLAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".activity.LoginOrRegister" />
         <activity android:name=".activity.FoodView" />
         <activity android:name=".activity.FoodOrderView" />
-        <activity android:name=".activity.FoodDetailed"></activity>
+        <activity android:name=".activity.FoodDetailed" />
+        <activity android:name=".activity.SCOSHelper" />
+
+        <service
+            android:name=".service.ServerObserverService"
+            android:enabled="true"
+            android:exported="true"
+            android:process="es.source.code.observerservice"></service><!--服务在另一个进程中运行-->
     </application>
 
 </manifest>
