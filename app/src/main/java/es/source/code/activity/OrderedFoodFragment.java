@@ -1,12 +1,16 @@
 package es.source.code.activity;
 
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +24,9 @@ import java.util.ArrayList;
 import es.source.code.R;
 import es.source.code.adapter.FoodOrderedAdapter;
 import es.source.code.model.CurrentUserFood;
+import es.source.code.model.GlobalData;
 import es.source.code.model.User;
+import es.source.code.util.Common;
 
 /**
  * 已下单未结账Fragment(相当于ViewPager中的子视图)
@@ -37,6 +43,8 @@ public class OrderedFoodFragment extends Fragment {
     private User currentUser;
     private Bundle bundle;
     private ProgressBar progressBar;
+    private IntentFilter intentFilter;
+    private OrderedChangeReceiver changeReceiver;//接受提交订单的广播，修改菜品数和菜单总价的值
 
 
 
@@ -45,7 +53,7 @@ public class OrderedFoodFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // TODO: 2018-10-09已下单未结账菜全局变量 （另有两个全局变量：已点未下单菜list,所有已点菜list）
-        currentUserFoodArrayList=new ArrayList<CurrentUserFood>();
+       // currentUserFoodArrayList=new ArrayList<CurrentUserFood>();
 
         currentUser=null;
         View view=inflater.inflate(R.layout.fragment_odered_food, container, false);
@@ -55,19 +63,27 @@ public class OrderedFoodFragment extends Fragment {
         checkOutAccountButton=(Button)view.findViewById(R.id.check_out_acount_button);
         progressBar=(ProgressBar)view.findViewById(R.id.check_out_progress_bar);
         context=getActivity();
+        Log.i("下单未付账","。。。");
 
         // TODO: 2018-10-09  开辟子线程加载信息，添加ProgressBar显示加载中
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
         orderedFoodRecycleView.setLayoutManager(linearLayoutManager);
-        foodOrderedAdapter=new FoodOrderedAdapter(currentUserFoodArrayList,context);
+        foodOrderedAdapter=new FoodOrderedAdapter(GlobalData.currentUserOrderedFoodList,context);
         orderedFoodRecycleView.setAdapter(foodOrderedAdapter);
-        foodNumber.setText("菜品总数");
-        accountTotalPrice.setText("订单总价");
-
+        foodNumber.setText("菜品总数："+ String.valueOf(GlobalData.currentUserOrderedFoodList.size()));
+        accountTotalPrice.setText("订单总价："+ String.valueOf(Common.getTotalPrice(GlobalData.currentUserOrderedFoodList)));
+        Log.i("下单未付账","进行了");
         bundle=getArguments();
         if(bundle.getSerializable("currentUser")!=null){
             currentUser=(User)bundle.getSerializable("currentUser");//获取用户
         }
+        Log.i("下单未付账","进行了");
+
+        //注册广播监听提交订单按钮以便改变菜品总数和订单总价
+        intentFilter=new IntentFilter();
+        intentFilter.addAction("scos.COMMIT");
+        changeReceiver=new OrderedChangeReceiver();
+        context.registerReceiver(changeReceiver,intentFilter);
 
         checkOutAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +91,8 @@ public class OrderedFoodFragment extends Fragment {
                 // TODO: 2018-10-09 结账
                 if(currentUser!=null){
                     new CheckOutTask().execute();//AsynTask子线程模拟结账
+//                    GlobalData.currentUserOrderedFoodList.clear();//清空已点未下单全局变量
+//                    foodOrderedAdapter.notifyDataSetChanged();//刷新适配器
                     if(currentUser.getOldUser()){
                         Toast.makeText(context,"您好，老顾客，本次你可享受7折优惠",Toast.LENGTH_SHORT).show();
                     }
@@ -82,6 +100,17 @@ public class OrderedFoodFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    //广播接收器
+    class OrderedChangeReceiver extends BroadcastReceiver {
+
+        public void onReceive(Context context, Intent intent){
+            foodNumber.setText("菜品总数："+String.valueOf(GlobalData.currentUserOrderedFoodList.size()));
+            accountTotalPrice.setText("订单总价："+ String.valueOf(Common.getTotalPrice(GlobalData.currentUserOrderedFoodList)));
+            abortBroadcast();//截断有序广播
+
+        }
     }
 
     //AsyncTask多线程模拟后台结账
@@ -132,6 +161,10 @@ public class OrderedFoodFragment extends Fragment {
             if(progressBar.getVisibility()==View.VISIBLE){
                 progressBar.setVisibility(View.GONE);
             }
+            GlobalData.currentUserOrderedFoodList.clear();//清空已点未下单全局变量
+            foodOrderedAdapter.notifyDataSetChanged();//刷新适配器
+            foodNumber.setText("菜品总数："+ String.valueOf(GlobalData.currentUserOrderedFoodList.size()));
+            accountTotalPrice.setText("订单总价："+ String.valueOf(Common.getTotalPrice(GlobalData.currentUserOrderedFoodList)));
             checkOutAccountButton.setClickable(false);//结账按钮不可点
             Toast.makeText(context,"本次共消费xx元，增加xx积分",Toast.LENGTH_SHORT).show();
 

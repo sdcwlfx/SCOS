@@ -5,7 +5,9 @@
     <uses-permission android:name="android.permission.CALL_PHONE" /> <!-- 电话权限 -->
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <!-- 自定义权限 -->
     <permission
@@ -48,7 +50,28 @@
             android:name=".service.ServerObserverService"
             android:enabled="true"
             android:exported="true"
-            android:process="es.source.code.observerservice"></service><!--服务在另一个进程中运行-->
+            android:process="es.source.code.observerservice" /> <!-- 服务在另一个进程中运行 -->
+        <service
+            android:name=".service.UpdateService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <receiver
+            android:name=".br.DeviceStartedListener"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" /> <!-- 指定要监听的广播 -->
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".service.MyService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".service.InitGlobalDataService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

@@ -4,31 +4,31 @@ import java.sql.Date;
 import java.util.List;
 
 /**
- * 用户就餐账单
+ * 用户就餐生成账单
  * Created by asus on 2018-10-08.
  */
 
 public class UserFoodAccount {
-    private User user;
-    private Food food;//食物
+    private String account;//用户账号
+    private String foodName;//食物
     private int number;//数量
     private String date;//结账时间
     private String remarks;//备注
 
-    public User getUser() {
-        return user;
+    public String getAccount() {
+        return account;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
-    public Food getFood() {
-        return food;
+    public String getFoodName() {
+        return foodName;
     }
 
-    public void setFood(Food food) {
-        this.food = food;
+    public void setFoodName(String foodName) {
+        this.foodName = foodName;
     }
 
     public int getNumber() {

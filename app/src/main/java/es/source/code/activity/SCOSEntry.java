@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.widget.Toast;
 
 import es.source.code.R;
+import es.source.code.service.InitGlobalDataService;
 import es.source.code.util.MyGestureListener;
 import es.source.code.util.MyRightLeftListener;
 
@@ -22,6 +23,9 @@ public class SCOSEntry extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.entry);
+        Intent intentInitGlobalData=new Intent(this, InitGlobalDataService.class);
+        startService(intentInitGlobalData);//开启服务从服务器加载所有菜品数据
+
 
         //左滑进入主页面MainScreen
         detector=new GestureDetector(this,new MyGestureListener(new MyRightLeftListener() {

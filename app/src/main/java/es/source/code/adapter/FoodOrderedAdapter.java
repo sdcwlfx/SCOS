@@ -38,11 +38,11 @@ public class FoodOrderedAdapter extends RecyclerView.Adapter<FoodOrderedAdapter.
         public ViewHodler(View view){
             super(view);
             foodView=view;
-            foodOrderedImageView=(ImageView)view.findViewById(R.id.food_not_order_image);
-            foodOrderedNameText=(TextView)view.findViewById(R.id.food_not_order_name);
-            foodOrderedPriceText=(TextView)view.findViewById(R.id.food_not_order_price);
-            foodOrderedNumberText=(TextView)view.findViewById(R.id.food_not_order_number);
-            foodOrderedRemarksText=(TextView)view.findViewById(R.id.food_not_order_remarks);
+            foodOrderedImageView=(ImageView)view.findViewById(R.id.food_ordered_image);
+            foodOrderedNameText=(TextView)view.findViewById(R.id.food_ordered_name);
+            foodOrderedPriceText=(TextView)view.findViewById(R.id.food_ordered_price);
+            foodOrderedNumberText=(TextView)view.findViewById(R.id.food_ordered_number);
+            foodOrderedRemarksText=(TextView)view.findViewById(R.id.food_ordered_remarks);
 
         }
     }
@@ -62,10 +62,10 @@ public class FoodOrderedAdapter extends RecyclerView.Adapter<FoodOrderedAdapter.
 
     public void onBindViewHolder(FoodOrderedAdapter.ViewHodler hodler, int position){
         CurrentUserFood currentUserFood=currentUserOrderedFoodList.get(position);
-        hodler.foodOrderedImageView.setImageResource(currentUserFood.getFood().getFoodImgId());
+        //hodler.foodOrderedImageView.setImageResource(currentUserFood.getFood().getFoodImgId());
         hodler.foodOrderedNameText.setText(currentUserFood.getFood().getFoodName());
-        hodler.foodOrderedPriceText.setText(currentUserFood.getTotalPrice());
-        hodler.foodOrderedNumberText.setText(currentUserFood.getNumber());
+        hodler.foodOrderedPriceText.setText(String.valueOf(currentUserFood.getTotalPrice()));
+        hodler.foodOrderedNumberText.setText(String.valueOf(currentUserFood.getNumber()));
         hodler.foodOrderedRemarksText.setText(currentUserFood.getRemarks());
 
     }

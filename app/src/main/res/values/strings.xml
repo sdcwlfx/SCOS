@@ -26,4 +26,6 @@
 
     <string name="help_phone">5554</string>
     <string name="help_message">test scos helper</string>
+
+    <string name="notification_cancel">清除</string>
 </resources>

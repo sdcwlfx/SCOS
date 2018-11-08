@@ -31,9 +31,9 @@ public class FoodView extends AppCompatActivity {
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private MyFragmentPagerAdapter myFragmentPagerAdapter;
-    private Messenger serviceMessenger=null;//向服务发送Message的Messenger对象,获取到的服务中的Messenger
-    private Messenger messenger=null;//活动中的Messenger，传入服务中去，服务使用它向本活动传递数据
-    private boolean bindState=false;//是否和服务绑定
+    private Messenger serviceMessenger=null;//向ServerObserverService服务发送Message的Messenger对象,获取到的ServerObserverService服务中的Messenger
+    private Messenger messenger=null;//活动中的Messenger，传入ServerObserverService服务中去，服务使用它向本活动传递数据
+    private boolean bindState=false;//是否和服务ServerObserverService绑定
 
     private ServiceConnection serviceConnection=new ServiceConnection() {
         /**
@@ -46,8 +46,8 @@ public class FoodView extends AppCompatActivity {
             //设置已绑定状态
             //通过参数service创建Messenger对象，该对象可想Service发送Message，与Service进行通信
             bindState=true;
-            serviceMessenger=new Messenger(service);//获得service中的Messenger
-            messenger=new Messenger(sMessageHandler);//创建本活动的Messenger给服务用，服务用它给本活动传数据
+            serviceMessenger=new Messenger(service);//依据service中创建Messenger
+            messenger=new Messenger(sMessageHandler);//创建本活动的Messenger给ServerObserverService服务用，ServerObserverService服务用它给本活动传数据
 
         }
         /**
@@ -62,23 +62,24 @@ public class FoodView extends AppCompatActivity {
     };
 
     /**
-     * 绑定后，向服务发送what属性为1的Meassage对象，并将本活动的Messenger传给服务，以便服务使用它给本活动传递数据
+     * 绑定后，向服务发送what属性为1或0的Meassage对象，并将本活动的Messenger传给服务ServerObserverService，以便服务使用它给本活动传递数据
+     * arg1为1时，启动多线程模拟接收服务器传回菜品库存信息，arg1为0时，停止实时更新，停止多线程
      */
     public void sendMeassageToService(int arg1){
         if(!bindState){
             return;
         }
-        Message message=Message.obtain(null,arg1,0,0);//发送what属性为1
-        message.replyTo=messenger;//将本活动的Messenger通过Message对象传给服务使用
+        Message message=Message.obtain(null,arg1,0,0);//发送what属性为arg1
+        message.replyTo=messenger;//将本活动的Messenger通过Message对象传给ServerObserverService服务使用
         try{
-            serviceMessenger.send(message);//通过服务的Messenger对象发送Message对象到服务
+            serviceMessenger.send(message);//通过服务的Messenger对象发送Message对象到ServerObserverService服务
         }catch (RemoteException e){
             e.printStackTrace();
         }
     }
 
     /**
-     * 接受服务传来的Message数据，执行对应动作
+     * 接受ServerObserverService服务传来的Message数据，执行对应动作
      */
     Handler sMessageHandler=new Handler(){
         public void handleMessage(Message message){
@@ -163,11 +164,12 @@ public class FoodView extends AppCompatActivity {
                 if(realTimeUpdate.equals("启动实时更新")){
                     item.setTitle("停止实时更新");
                     Intent intent1=new Intent(FoodView.this, ServerObserverService.class);
-                    bindService(intent1,serviceConnection, Context.BIND_AUTO_CREATE);//绑定服务，直接调用服务的onCreate()
-                    sendMeassageToService(1);//发送what属性为1的Message对象给服务
+                    bindService(intent1,serviceConnection, Context.BIND_AUTO_CREATE);//绑定ServerObserverService服务，直接调用服务的onCreate()
+                    sendMeassageToService(1);//发送what属性为1的Message对象给服务ServerObserverService
                 }
                 if(realTimeUpdate.equals("停止实时更新")){
-                    sendMeassageToService(0);//发送what属性为0的Message
+                    item.setTitle("启动实时更新");
+                    sendMeassageToService(0);//发送what属性为0的Message到服务ServerObserverService
                 }
 
                 break;
