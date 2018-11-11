@@ -1,15 +1,17 @@
 package es.source.code.service;
 
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import org.json.JSONArray;
@@ -21,30 +23,21 @@ import java.util.ArrayList;
 import es.source.code.R;
 import es.source.code.activity.FoodDetailed;
 import es.source.code.model.Food;
-import es.source.code.model.GlobalData;
 import es.source.code.util.HttpUtil;
 
-/**
- *异步的、会自动停止的IntentService
- */
-public class UpdateService extends IntentService {
+public class UService extends Service {
     private ArrayList<Food> foodList=null;
-
-    public UpdateService() {
-        super("UpdateService");
+    public UService() {
         foodList=new ArrayList<Food>();
     }
 
-    /**
-     * 子线程中运行执行耗时任务
-     * @param intent
-     */
-    protected void onHandleIntent(Intent intent){
-        // TODO: 2018-10-29  模拟检查服务器是否有菜品种更新信息，如有更新则使用通知发送状态栏通知，并且通知可点击
+    public void onCreate(){
+        super.onCreate();
+        Log.i("服务：","ServerObserverService");
         String responseData= HttpUtil.getNewFoodInformation();//获取json数组字符串
         if(!responseData.equals("")){//有菜品信息更新
             try {
-                MediaPlayer mediaPlayer=MediaPlayer.create(this,R.raw.noti);//加载音频
+                MediaPlayer mediaPlayer=MediaPlayer.create(this, R.raw.noti);//加载音频
                 mediaPlayer.start();//播放菜品更新通知音频
 
                 //JSONObject jsonObject=new JSONObject(repsonseData);//新菜品信息JSON对象
@@ -61,7 +54,6 @@ public class UpdateService extends IntentService {
                     food.setFoodCategory(newFoodKind);
                     food.setFoodImgId(R.drawable.ic_logo);
                     food.setFoodStackNum(newFoodStackNum);
-                    addTGlobalData(food);
                     foodList.add(food);
                 }
 
@@ -114,21 +106,11 @@ public class UpdateService extends IntentService {
 
 
         }
-
     }
 
-    private void addTGlobalData(Food food){
-        String foodCategory=food.getFoodCategory();
-        if(foodCategory.equals("凉菜")){
-            GlobalData.coldFoodList.add(food);
-        }else if(foodCategory.equals("热菜")){
-            GlobalData.hotFoodList.add(food);
-        }else if(foodCategory.equals("酒水")){
-            GlobalData.wineList.add(food);
-        }else if(foodCategory.equals("海鲜")){
-            GlobalData.seaFoodList.add(food);
-        }
+    @Override
+    public IBinder onBind(Intent intent) {
+        // TODO: Return the communication channel to the service.
+        throw new UnsupportedOperationException("Not yet implemented");
     }
-
-
 }

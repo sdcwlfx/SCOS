@@ -23,6 +23,7 @@ import java.util.Objects;
 
 import es.source.code.R;
 import es.source.code.model.User;
+import es.source.code.service.UpdateService;
 
 public class MainScreen extends AppCompatActivity {
 
@@ -83,6 +84,11 @@ public class MainScreen extends AppCompatActivity {
                     startActivity(intent);
 
                 }else if(selectedName.equals(logined)){//已登录按钮
+                    //Intent intent=new Intent("android.intent.action.BOOT_COMPLETED");
+                    //sendBroadcast(intent);
+                    Intent intent1=new Intent(MainScreen.this,UpdateService.class);
+                    startService(intent1);
+
 
                 }
             }

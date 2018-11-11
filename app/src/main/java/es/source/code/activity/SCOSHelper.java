@@ -50,7 +50,7 @@ public class SCOSHelper extends AppCompatActivity {
 
         helpGridView=(GridView)findViewById(R.id.help_grid_view);
         String name[]={"用户使用协议","关于系统","电话人工帮助","短信帮助","邮件帮助"};
-        int icon[]={R.drawable.ic_logo,R.drawable.ic_logo,R.drawable.ic_logo,R.drawable.ic_logo,R.drawable.ic_logo};
+        int icon[]={R.drawable.user_agreement,R.drawable.about_system,R.drawable.phone_helper,R.drawable.message_helper,R.drawable.email_helper};
         dataList=new ArrayList<Map<String,Object>>();
         for(int i=0;i<name.length;i++){
             Map<String,Object> map=new HashMap<String,Object>();
@@ -192,7 +192,7 @@ public class SCOSHelper extends AppCompatActivity {
     //邮件帮助线程
     private class MailSender implements Runnable{
         public void run(){
-            mailSenderAuth=new MailSenderAuth("18463102717@163.com","152453");
+            mailSenderAuth=new MailSenderAuth("18463102717@163.com","lfx152453");
             mailSenderAuth.sendMail("SCOS求助","test scos helper","18463102717@163.com","810254021@qq.com");
             Message message=new Message();
             message.what=SIGN;

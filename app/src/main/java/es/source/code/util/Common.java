@@ -3,12 +3,16 @@ package es.source.code.util;
 import android.app.ActivityManager;
 import android.content.Context;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import es.source.code.model.CurrentUserFood;
 import es.source.code.model.Food;
 import es.source.code.model.GlobalData;
+import es.source.code.model.RealTimeFoodData;
 
 /**
  * 判断SCOS app进程是否正在运行
@@ -113,6 +117,19 @@ public class Common {
                 break;
             }
         }
+
+    }
+
+    //获取实时菜品数据（菜品名和库存）
+    public static ArrayList<RealTimeFoodData> getRealTimeFoodData(String addressData){
+        Gson gson=new Gson();
+        String jsonData="";
+        jsonData=HttpUtil.getRealTimeUpdateFoodInfomation(addressData);
+        ArrayList<RealTimeFoodData> realTimeFoodDatas=null;
+        if(!jsonData.equals("")) {
+            realTimeFoodDatas=gson.fromJson(jsonData,new TypeToken<ArrayList<RealTimeFoodData>>(){}.getType());
+        }
+        return realTimeFoodDatas;
 
     }
 

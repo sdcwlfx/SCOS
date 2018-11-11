@@ -32,9 +32,10 @@ public class HttpUtil {
 //    private static String addressUpdate="http://10.0.2.2:8080/SCOSServer/FoodUpdateService";//菜品信息更新地址
     private static String addressLogin="http://192.168.0.102:8080/SCOSServer/LoginValidator";//模拟器测试
     private static String addressRegister="http://192.168.0.102:8080/SCOSServer/Register";//模拟器测试
-    private static String addressUpdate="http://192.168.0.102:8080/SCOSServer/FoodUpdateService";//菜品信息更新地址
+    private static String addressUpdate="http://192.168.0.102:8080/SCOSServer/FoodUpdateService";//菜品种类信息更新地址
 
 
+    //HttpURLConnection方法
     public static String sendLoginHttpRequest(String account,String password,String address){
         HttpURLConnection connection=null;
         BufferedReader reader=null;
@@ -175,8 +176,30 @@ public class HttpUtil {
         }catch (IOException e){
             e.printStackTrace();
         }
-
         return responseData;
+    }
+
+    //从服务器获取到实时菜品数据已达到实时更新效果
+    public static String getRealTimeUpdateFoodInfomation(String addressRealTimeUpdate){
+        String responseData="";
+        try{
+            //OkHttpClient client=new OkHttpClient();
+            OkHttpClient client=new OkHttpClient.Builder()
+                    .connectTimeout(10, TimeUnit.SECONDS)
+                    .readTimeout(20,TimeUnit.SECONDS)
+                    .build();
+            Request request=new Request.Builder()
+                    .url(addressRealTimeUpdate)
+                    .build();
+            Response response=client.newCall(request).execute();//执行GET请求接受返回的菜品信息
+            responseData=response.body().string();//不能使用body().toString()
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return responseData;
+
+
     }
 
 

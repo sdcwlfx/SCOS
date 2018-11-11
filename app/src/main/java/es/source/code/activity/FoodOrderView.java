@@ -43,8 +43,8 @@ public class FoodOrderView extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         //设置图片
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_logo);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_logo);
+        tabLayout.getTabAt(0).setIcon(R.mipmap.not_order_food);
+        tabLayout.getTabAt(1).setIcon(R.mipmap.ordered_food);
         if(option.equals("food_ordered")){ //默认显示“未下单菜”页
             tabLayout.getTabAt(0).select();
         }else if(option.equals("order_watch")){ //默认显示“已下单菜”页

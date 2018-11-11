@@ -28,4 +28,5 @@
     <string name="help_message">test scos helper</string>
 
     <string name="notification_cancel">清除</string>
+    <string name="notification_new_food">新品上架</string>
 </resources>
