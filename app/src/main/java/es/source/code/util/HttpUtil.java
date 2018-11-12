@@ -4,17 +4,22 @@ import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import es.source.code.model.Food;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -27,12 +32,14 @@ import okhttp3.Response;
  */
 
 public class HttpUtil {
-//    private static String addressLogin="http://10.0.2.2:8080/SCOSServer/LoginValidator";//模拟器测试
-//    private static String addressRegister="http://10.0.2.2:8080/SCOSServer/Register";//模拟器测试
-//    private static String addressUpdate="http://10.0.2.2:8080/SCOSServer/FoodUpdateService";//菜品信息更新地址
-    private static String addressLogin="http://192.168.0.102:8080/SCOSServer/LoginValidator";//模拟器测试
-    private static String addressRegister="http://192.168.0.102:8080/SCOSServer/Register";//模拟器测试
-    private static String addressUpdate="http://192.168.0.102:8080/SCOSServer/FoodUpdateService";//菜品种类信息更新地址
+    private static String addressLogin="http://192.168.43.155:8080/SCOSServer/LoginValidator";//模拟器测试
+    private static String addressRegister="http://192.168.43.155:8080/SCOSServer/Register";//模拟器测试
+    private static String addressUpdate="http://192.168.43.155:8080/SCOSServer/FoodUpdateService";//菜品信息更新地址
+    private static String addressUpdateFromXML="http://192.168.43.155:8080/SCOSServer/newFood.xml";//菜品信息更新地址
+
+//    private static String addressLogin="http://192.168.0.102:8080/SCOSServer/LoginValidator";//模拟器测试
+//    private static String addressRegister="http://192.168.0.102:8080/SCOSServer/Register";//模拟器测试
+//    private static String addressUpdate="http://192.168.0.102:8080/SCOSServer/FoodUpdateService";//菜品种类信息更新地址
 
 
     //HttpURLConnection方法
@@ -158,6 +165,67 @@ public class HttpUtil {
     }
 
 
+    //从服务器中获取存储形式为XML文件的新菜品类
+    public static ArrayList<Food> getNewFoodInfoFromXML(){
+        ArrayList<Food> newFoodArrayList=new ArrayList<Food>();
+        try{
+            OkHttpClient client=new OkHttpClient.Builder()
+                    .connectTimeout(10, TimeUnit.SECONDS)
+                    .readTimeout(20,TimeUnit.SECONDS)
+                    .build();
+            Request request=new Request.Builder()
+                    .url(addressUpdateFromXML)
+                    .build();
+            Response response=client.newCall(request).execute();
+            String responseData=response.body().string();
+            //解析XML文件内容
+            XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
+            XmlPullParser xmlPullParser=factory.newPullParser();
+            xmlPullParser.setInput(new StringReader(responseData));
+            int eventType=xmlPullParser.getEventType();
+            String foodName="";
+            int foodPrice=0;
+            int foodStackNum=0;
+            String foodCategory="";
+            while (eventType!=XmlPullParser.END_DOCUMENT){
+                String nodeName=xmlPullParser.getName();
+                switch (eventType){
+                    case XmlPullParser.START_TAG:
+                        if("foodName".equals(nodeName)){
+                            foodName=xmlPullParser.nextText();
+                        }else if("foodPrice".equals(nodeName)){
+                            foodPrice=Integer.parseInt(xmlPullParser.nextText());
+                        }else if("foodStackNum".equals(nodeName)){
+                            foodStackNum=Integer.parseInt(xmlPullParser.nextText());
+                        }else if("foodCategory".equals(nodeName)){
+                            foodCategory=xmlPullParser.nextText();
+                        }
+                        break;
+                    case XmlPullParser.END_TAG:
+                        if("food".equals(nodeName)){
+                            Food food=new Food();
+                            food.setFoodName(foodName);
+                            food.setFoodCategory(foodCategory);
+                            food.setFoodStackNum(foodStackNum);
+                            food.setFoodPrice(foodPrice);
+                            newFoodArrayList.add(food);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                eventType=xmlPullParser.next();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return newFoodArrayList;
+    }
+
+
+
+
+
     //okhttp3请求Http请求，获取菜品信息，初始化全局变量
     public static String getFoodInformation(String addressFood){
         String responseData="";
@@ -201,6 +269,8 @@ public class HttpUtil {
 
 
     }
+
+
 
 
 

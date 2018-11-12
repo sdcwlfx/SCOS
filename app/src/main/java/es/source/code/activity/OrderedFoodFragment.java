@@ -161,12 +161,13 @@ public class OrderedFoodFragment extends Fragment {
             if(progressBar.getVisibility()==View.VISIBLE){
                 progressBar.setVisibility(View.GONE);
             }
+            String totalMoney=String.valueOf(Common.getTotalPrice(GlobalData.currentUserOrderedFoodList));
             GlobalData.currentUserOrderedFoodList.clear();//清空已点未下单全局变量
             foodOrderedAdapter.notifyDataSetChanged();//刷新适配器
             foodNumber.setText("菜品总数："+ String.valueOf(GlobalData.currentUserOrderedFoodList.size()));
-            accountTotalPrice.setText("订单总价："+ String.valueOf(Common.getTotalPrice(GlobalData.currentUserOrderedFoodList)));
+            accountTotalPrice.setText("订单总价："+ "0");
             checkOutAccountButton.setClickable(false);//结账按钮不可点
-            Toast.makeText(context,"本次共消费xx元，增加xx积分",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,"本次共消费"+totalMoney+"元，增加xx积分",Toast.LENGTH_SHORT).show();
 
         }
 

@@ -48,7 +48,7 @@ public class UpdateService extends IntentService {
                 mediaPlayer.start();//播放菜品更新通知音频
 
                 //JSONObject jsonObject=new JSONObject(repsonseData);//新菜品信息JSON对象
-                JSONArray jsonArray=new JSONArray(responseData);
+               /* JSONArray jsonArray=new JSONArray(responseData);
                 for(int i=0;i<jsonArray.length();i++){
                     JSONObject jsonObject=jsonArray.getJSONObject(i);
                     String newFoodName=jsonObject.getString("foodName");//新菜品名字
@@ -63,6 +63,10 @@ public class UpdateService extends IntentService {
                     food.setFoodStackNum(newFoodStackNum);
                     addTGlobalData(food);
                     foodList.add(food);
+                }*/
+                foodList=HttpUtil.getNewFoodInfoFromXML();
+                for (int i=0;i<foodList.size();i++){
+                    addTGlobalData(foodList.get(i));
                 }
 
                 Intent intent1=new Intent(this, FoodDetailed.class);
@@ -106,7 +110,7 @@ public class UpdateService extends IntentService {
                 remoteViews.setTextViewText(R.id.notification_text_view,foodList.get(0).getFoodName()+"   "+foodList.get(0).getFoodPrice()+"元/份   "+foodList.get(0).getFoodCategory());//设置子控件显示
                 notification.contentView=remoteViews;
                 manager.notify(1,notification);
-            }catch (JSONException e){
+            }catch (Exception e){
                 e.printStackTrace();
             }
 

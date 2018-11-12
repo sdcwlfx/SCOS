@@ -18,14 +18,14 @@ import es.source.code.util.HttpUtil;
  * helper methods.
  */
 public class InitGlobalDataService extends IntentService {
-//    private String coldFoodAddress="http://10.0.2.2:8080/SCOSServer/ColdFood";
-//    private String hotFoodAddress="http://10.0.2.2:8080/SCOSServer/HotFood";
-//    private String seaFoodAddress="http://10.0.2.2:8080/SCOSServer/SeaFood";
-//    private String wineAddress="http://10.0.2.2:8080/SCOSServer/Wine";
-    private String coldFoodAddress="http://192.168.0.102:8080/SCOSServer/ColdFood";
-    private String hotFoodAddress="http://192.168.0.102:8080/SCOSServer/HotFood";
-    private String seaFoodAddress="http://192.168.0.102:8080/SCOSServer/SeaFood";
-    private String wineAddress="http://192.168.0.102:8080/SCOSServer/Wine";
+    private String coldFoodAddress="http://192.168.43.155:8080/SCOSServer/ColdFood";
+    private String hotFoodAddress="http://192.168.43.155:8080/SCOSServer/HotFood";
+    private String seaFoodAddress="http://192.168.43.155:8080/SCOSServer/SeaFood";
+    private String wineAddress="http://192.168.43.155:8080/SCOSServer/Wine";
+//    private String coldFoodAddress="http://192.168.0.102:8080/SCOSServer/ColdFood";
+//    private String hotFoodAddress="http://192.168.0.102:8080/SCOSServer/HotFood";
+//    private String seaFoodAddress="http://192.168.0.102:8080/SCOSServer/SeaFood";
+//    private String wineAddress="http://192.168.0.102:8080/SCOSServer/Wine";
 
 
 

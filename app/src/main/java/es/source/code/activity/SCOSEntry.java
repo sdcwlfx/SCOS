@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import es.source.code.R;
 import es.source.code.service.InitGlobalDataService;
+import es.source.code.service.UService;
 import es.source.code.util.MyGestureListener;
 import es.source.code.util.MyRightLeftListener;
 
@@ -25,6 +26,10 @@ public class SCOSEntry extends AppCompatActivity {
         setContentView(R.layout.entry);
         Intent intentInitGlobalData=new Intent(this, InitGlobalDataService.class);
         startService(intentInitGlobalData);//开启服务从服务器加载所有菜品数据
+
+        //开启菜品更新定时查询活动
+        Intent intent=new Intent(SCOSEntry.this, UService.class);
+        startService(intent);
 
 
         //左滑进入主页面MainScreen
